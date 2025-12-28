@@ -1,6 +1,6 @@
-﻿<div align="center">
+<div align="center">
 
-#  Intelligent Invoice Memory Agent
+# 🧠 Intelligent Invoice Memory Agent
 
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=for-the-badge)](https://intelligent-invoice-memory-agent.vercel.app/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -11,13 +11,13 @@
 
 **An AI-powered invoice processing system that learns from human corrections and automatically applies them to future invoices.**
 
-[Live Demo](https://intelligent-invoice-memory-agent.vercel.app/)  [Report Bug](https://github.com/KUNALSHAWW/Intelligent-Invoice-Memory-Agent/issues)  [Request Feature](https://github.com/KUNALSHAWW/Intelligent-Invoice-Memory-Agent/issues)
+[Live Demo](https://intelligent-invoice-memory-agent.vercel.app/) • [Report Bug](https://github.com/KUNALSHAWW/Intelligent-Invoice-Memory-Agent/issues) • [Request Feature](https://github.com/KUNALSHAWW/Intelligent-Invoice-Memory-Agent/issues)
 
 </div>
 
 ---
 
-##  Table of Contents
+## 📑 Table of Contents
 
 - [Overview](#-overview)
 - [Key Features](#-key-features)
@@ -34,17 +34,19 @@
 
 ---
 
-##  Overview
+## 🎯 Overview
 
 The **Intelligent Invoice Memory Agent** is a production-ready system designed to streamline invoice processing through machine learning from human feedback. Instead of requiring complex ML model training, the system uses a **memory-based approach** that learns incrementally from user corrections.
 
 ### The Problem
+
 - Invoice processing is repetitive and error-prone
 - Different vendors have different invoice formats
 - Manual corrections are made repeatedly for the same vendor patterns
 - No learning from past corrections
 
 ### The Solution
+
 - **Memory-based learning**: System remembers corrections per vendor
 - **Auto-correction**: Applies learned patterns automatically
 - **Confidence scoring**: Routes low-confidence invoices for human review
@@ -52,62 +54,70 @@ The **Intelligent Invoice Memory Agent** is a production-ready system designed t
 
 ---
 
-##  Key Features
+## ✨ Key Features
 
 | Feature | Description |
 |---------|-------------|
-|  **Memory Recall** | Fetches vendor-specific rules (e.g., "Supplier A always has Leistungsdatum  serviceDate") |
-|  **Auto-Correction** | Automatically applies learned field mappings to normalize invoice data |
-|  **Learning Engine** | Learns from human corrections and stores patterns for future use |
-|  **Decision Engine** | Auto-approves invoices with >80% confidence, flags others for review |
-|  **Modern UI** | Sleek "Monochrome Luxury" interface with real-time processing animations |
-|  **Audit Trail** | Complete logging of all processing decisions and corrections |
-|  **Persistent Storage** | SQLite database with disk persistence for production reliability |
-|  **REST API** | Full-featured Express.js API with CORS enabled for cross-origin requests |
+| 🧠 **Memory Recall** | Fetches vendor-specific rules (e.g., "Supplier A always has Leistungsdatum → serviceDate") |
+| ⚡ **Auto-Correction** | Automatically applies learned field mappings to normalize invoice data |
+| 📚 **Learning Engine** | Learns from human corrections and stores patterns for future use |
+| 🎯 **Decision Engine** | Auto-approves invoices with >80% confidence, flags others for review |
+| 🎨 **Modern UI** | Sleek "Monochrome Luxury" interface with real-time processing animations |
+| 📝 **Audit Trail** | Complete logging of all processing decisions and corrections |
+| 💾 **Persistent Storage** | SQLite database with disk persistence for production reliability |
+| 🔌 **REST API** | Full-featured Express.js API with CORS enabled for cross-origin requests |
 
 ---
 
-##  System Architecture
+## 🏗 System Architecture
 
 ```
-
-                              FRONTEND (Vercel)                              
-                          Next.js 14 + Tailwind CSS                          
-       
-    Dashboard      Invoice Processor           Rules Viewer            
-    - Status       - JSON Input         - Vendor Rules                
-    - Metrics      - Agent Mind         - Correction Patterns         
-    - Rules        - Human Review       - Usage Statistics            
-       
-─
-                                     
-                                      HTTPS (REST API)
-                                     
-
-                              BACKEND (Render)                               
-                           Express.js + TypeScript                           
-    
-                             Memory Manager                                
-              
-       recall()       apply()        learn()     makeDecision()    
-     Fetch rules   Apply rules    Store new       Confidence      
-     & patterns    to invoice     corrections     evaluation      
-              
-    
-                                                                            
-                                                                            
-    
-                          SQLite Database                                  
-     vendor_rules    correction_patterns    audit_logs                  
-    
-
+┌─────────────────────────────────────────────────────────────────────┐
+│                        FRONTEND (Vercel)                            │
+│                     Next.js 14 + Tailwind CSS                       │
+│                                                                     │
+│  ┌─────────────┐    ┌─────────────────┐    ┌─────────────────┐     │
+│  │  Dashboard  │    │ Invoice Processor│    │  Rules Viewer   │     │
+│  │  - Status   │    │  - JSON Input    │    │  - Vendor Rules │     │
+│  │  - Metrics  │    │  - Agent Mind    │    │  - Patterns     │     │
+│  │  - Rules    │    │  - Human Review  │    │  - Statistics   │     │
+│  └─────────────┘    └─────────────────┘    └─────────────────┘     │
+└─────────────────────────────────┬───────────────────────────────────┘
+                                  │
+                                  │ HTTPS (REST API)
+                                  ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         BACKEND (Render)                            │
+│                      Express.js + TypeScript                        │
+│                                                                     │
+│                      ┌──────────────────┐                           │
+│                      │  Memory Manager  │                           │
+│                      └────────┬─────────┘                           │
+│                               │                                     │
+│     ┌──────────┬──────────┬───┴───┬──────────────┐                  │
+│     │          │          │       │              │                  │
+│     ▼          ▼          ▼       ▼              ▼                  │
+│  recall()   apply()   learn()  makeDecision()  stats()              │
+│                                                                     │
+└─────────────────────────────────┬───────────────────────────────────┘
+                                  │
+                                  ▼
+                    ┌───────────────────────┐
+                    │    SQLite Database    │
+                    │  ┌─────────────────┐  │
+                    │  │  vendor_rules   │  │
+                    │  │  patterns       │  │
+                    │  │  audit_logs     │  │
+                    │  └─────────────────┘  │
+                    └───────────────────────┘
 ```
 
 ---
 
-##  Tech Stack
+## 🛠 Tech Stack
 
 ### Backend
+
 | Technology | Purpose |
 |------------|---------|
 | **Node.js 18** | Runtime environment |
@@ -119,6 +129,7 @@ The **Intelligent Invoice Memory Agent** is a production-ready system designed t
 | **CORS** | Cross-origin resource sharing |
 
 ### Frontend
+
 | Technology | Purpose |
 |------------|---------|
 | **Next.js 14** | React framework with App Router |
@@ -128,6 +139,7 @@ The **Intelligent Invoice Memory Agent** is a production-ready system designed t
 | **JetBrains Mono** | Monospace typography |
 
 ### Deployment
+
 | Platform | Service |
 |----------|---------|
 | **Vercel** | Frontend hosting (SSR + Edge) |
@@ -136,7 +148,7 @@ The **Intelligent Invoice Memory Agent** is a production-ready system designed t
 
 ---
 
-##  Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -147,66 +159,78 @@ The **Intelligent Invoice Memory Agent** is a production-ready system designed t
 ### Installation
 
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/KUNALSHAWW/Intelligent-Invoice-Memory-Agent.git
-   cd Intelligent-Invoice-Memory-Agent
-   ```
+
+```bash
+git clone https://github.com/KUNALSHAWW/Intelligent-Invoice-Memory-Agent.git
+cd Intelligent-Invoice-Memory-Agent
+```
 
 2. **Install Backend Dependencies**
-   ```bash
-   npm install
-   ```
+
+```bash
+npm install
+```
 
 3. **Install Frontend Dependencies**
-   ```bash
-   cd frontend
-   npm install
-   cd ..
-   ```
+
+```bash
+cd frontend
+npm install
+cd ..
+```
 
 4. **Build the Backend**
-   ```bash
-   npm run build
-   ```
+
+```bash
+npm run build
+```
 
 5. **Seed the Database (Optional)**
-   ```bash
-   npm run seed
-   ```
+
+```bash
+npm run seed
+```
 
 6. **Start the Backend Server**
-   ```bash
-   npm start
-   # Server runs on http://localhost:3000
-   ```
+
+```bash
+npm start
+# Server runs on http://localhost:3000
+```
 
 7. **Start the Frontend (New Terminal)**
-   ```bash
-   cd frontend
-   npm run dev
-   # Frontend runs on http://localhost:3001
-   ```
+
+```bash
+cd frontend
+npm run dev
+# Frontend runs on http://localhost:3001
+```
 
 8. **Open in Browser**
-   ```
-   http://localhost:3001
-   ```
+
+```
+http://localhost:3001
+```
 
 ---
 
-##  API Reference
+## 📡 API Reference
 
 ### Base URL
+
 - **Local**: `http://localhost:3000`
 - **Production**: Your Render URL
 
 ### Endpoints
 
 #### Health Check
+
 ```http
 GET /health
 ```
+
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -216,10 +240,15 @@ GET /health
 ```
 
 #### Process Invoice
+
 ```http
 POST /process
 Content-Type: application/json
+```
 
+**Request Body:**
+
+```json
 {
   "invoice": {
     "invoiceId": "INV-001",
@@ -232,67 +261,81 @@ Content-Type: application/json
   }
 }
 ```
+
 **Response:**
+
 ```json
 {
-  "originalInvoice": { ... },
-  "processedInvoice": { ... },
+  "originalInvoice": { "..." },
+  "processedInvoice": { "..." },
   "proposedCorrections": [
     {
       "field": "serviceDate",
       "currentValue": null,
       "proposedValue": "2024-01-15",
-      "source": "VendorRule: Leistungsdatum  serviceDate",
+      "source": "VendorRule: Leistungsdatum → serviceDate",
       "confidence": 0.7
     }
   ],
   "confidenceScore": 0.85,
   "requiresHumanReview": false,
   "reviewReasons": [],
-  "auditTrail": [ ... ]
+  "auditTrail": ["..."]
 }
 ```
 
 #### Learn from Corrections
+
 ```http
 POST /learn
 Content-Type: application/json
+```
 
+**Request Body:**
+
+```json
 {
   "invoiceId": "INV-001",
-  "originalInvoice": { ... },
-  "finalInvoice": { ... }
+  "originalInvoice": { "..." },
+  "finalInvoice": { "..." }
 }
 ```
+
 **Response:**
+
 ```json
 {
   "success": true,
   "invoiceId": "INV-001",
   "learnResult": {
-    "newRules": [...],
-    "updatedRules": [...],
-    "newPatterns": [...],
-    "updatedPatterns": [...]
+    "newRules": [],
+    "updatedRules": [],
+    "newPatterns": [],
+    "updatedPatterns": []
   }
 }
 ```
 
 #### Get Rules
+
 ```http
 GET /rules
 ```
 
 #### Get Patterns
+
 ```http
 GET /patterns
 ```
 
 #### Get Statistics
+
 ```http
 GET /stats
 ```
+
 **Response:**
+
 ```json
 {
   "rules": 5,
@@ -303,57 +346,60 @@ GET /stats
 
 ---
 
-##  Frontend Pages
+## 🖥 Frontend Pages
 
 ### 1. Dashboard (`/`)
+
 - **System Status**: Real-time backend connectivity
 - **Metrics Display**: Memories stored, patterns learned, automation accuracy
 - **Rules Preview**: Recently learned vendor rules
 - **Quick Actions**: Navigate to processor or rules viewer
 
 ### 2. Invoice Processor (`/invoice`)
+
 - **JSON Input**: Paste or load demo invoice data
 - **Agent Mind Visualization**: Animated neural network showing processing phases
-- **Processing Phases**: Receiving  Recalling  Analyzing  Applying  Deciding
+- **Processing Phases**: Receiving → Recalling → Analyzing → Applying → Deciding
 - **Confidence Meter**: Visual confidence score with threshold indicator
 - **Human Review Form**: Edit fields when confidence is below threshold
 - **Learning Submission**: Train the system with corrections
 
 ### 3. Rules Viewer (`/rules`)
+
 - **Vendor Rules Tab**: All learned field mappings grouped by vendor
 - **Patterns Tab**: Cross-vendor correction patterns
 - **Raw JSON View**: Technical data inspection
 
 ---
 
-##  How It Works
+## ⚙️ How It Works
 
 ### Processing Flow
 
 ```
 1. RECEIVE INVOICE
-    Validate JSON structure
-    Extract vendor identifier
+   ├── Validate JSON structure
+   └── Extract vendor identifier
 
 2. RECALL MEMORIES
-    Query vendor_rules table for vendor-specific rules
-    Query correction_patterns for applicable patterns
+   ├── Query vendor_rules table for vendor-specific rules
+   └── Query correction_patterns for applicable patterns
 
 3. APPLY CORRECTIONS
-    Execute field mappings (e.g., Leistungsdatum  serviceDate)
-    Apply pattern-based transformations (e.g., VAT removal)
-    Track all changes in audit trail
+   ├── Execute field mappings (e.g., Leistungsdatum → serviceDate)
+   ├── Apply pattern-based transformations (e.g., VAT removal)
+   └── Track all changes in audit trail
 
 4. MAKE DECISION
-    Calculate confidence score
-    If confidence  80%: AUTO-APPROVE
-    If confidence < 80%: FLAG FOR HUMAN REVIEW
+   ├── Calculate confidence score
+   ├── If confidence ≥ 80%: AUTO-APPROVE
+   └── If confidence < 80%: FLAG FOR HUMAN REVIEW
 
 5. LEARN (if human corrections provided)
-    Compare original vs final invoice
-    Extract new rules from corrections
-    Update existing rule confidence
-    Store new patterns
+   ├── Compare original vs final invoice
+   ├── Extract new rules from corrections
+   ├── Update existing rule confidence
+   └── Store new patterns
 ```
 
 ### Example: Learning a New Rule
@@ -362,23 +408,23 @@ GET /stats
 
 ```
 Before Learning:
-- Invoice has: { extractedFields: { Leistungsdatum: "2024-01-15" } }
-- System outputs: { serviceDate: null }
-- Human corrects: { serviceDate: "2024-01-15" }
+├── Invoice has: { extractedFields: { Leistungsdatum: "2024-01-15" } }
+├── System outputs: { serviceDate: null }
+└── Human corrects: { serviceDate: "2024-01-15" }
 
 After Learning:
-- New rule created: "Leistungsdatum"  "serviceDate" for "Supplier GmbH"
-- Confidence: 50% (initial)
+├── New rule created: "Leistungsdatum" → "serviceDate" for "Supplier GmbH"
+└── Confidence: 50% (initial)
 
 Next Invoice from Same Vendor:
-- Invoice has: { extractedFields: { Leistungsdatum: "2024-02-20" } }
-- System auto-fills: { serviceDate: "2024-02-20" }
-- Rule confidence increases with each successful application
+├── Invoice has: { extractedFields: { Leistungsdatum: "2024-02-20" } }
+├── System auto-fills: { serviceDate: "2024-02-20" }
+└── Rule confidence increases with each successful application
 ```
 
 ---
 
-##  Deployment
+## 🌐 Deployment
 
 ### Backend Deployment (Render)
 
@@ -416,43 +462,43 @@ docker run -p 3000:3000 -v invoice-data:/data invoice-memory-agent
 
 ---
 
-##  Project Structure
+## 📁 Project Structure
 
 ```
 Intelligent-Invoice-Memory-Agent/
- src/                          # Backend source code
-    types.ts                  # Zod schemas & TypeScript types
-    memory.ts                 # MemoryManager class & DB operations
-    server.ts                 # Express API server
-    seed.ts                   # Database seeding script
-    demo.ts                   # Demo/testing script
- frontend/                     # Next.js frontend
-    src/
-       app/
-          page.tsx          # Dashboard
-          invoice/page.tsx  # Invoice Processor
-          rules/page.tsx    # Rules Viewer
-          layout.tsx        # Root layout
-          globals.css       # Global styles
-       components/
-          AgentState.tsx    # Agent brain animation
-          ui.tsx            # Reusable UI components
-       lib/
-           api.ts            # Backend API client
-    tailwind.config.ts        # Tailwind configuration
-    package.json
- dist/                         # Compiled backend
- data/                         # SQLite database
- Dockerfile                    # Docker configuration
- render.yaml                   # Render Blueprint
- package.json                  # Backend dependencies
- tsconfig.json                 # TypeScript configuration
- README.md                     # This file
+├── src/                        # Backend source code
+│   ├── types.ts                # Zod schemas & TypeScript types
+│   ├── memory.ts               # MemoryManager class & DB operations
+│   ├── server.ts               # Express API server
+│   ├── seed.ts                 # Database seeding script
+│   └── demo.ts                 # Demo/testing script
+├── frontend/                   # Next.js frontend
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── page.tsx        # Dashboard
+│   │   │   ├── invoice/page.tsx # Invoice Processor
+│   │   │   ├── rules/page.tsx  # Rules Viewer
+│   │   │   ├── layout.tsx      # Root layout
+│   │   │   └── globals.css     # Global styles
+│   │   ├── components/
+│   │   │   ├── AgentState.tsx  # Agent brain animation
+│   │   │   └── ui.tsx          # Reusable UI components
+│   │   └── lib/
+│   │       └── api.ts          # Backend API client
+│   ├── tailwind.config.ts      # Tailwind configuration
+│   └── package.json
+├── dist/                       # Compiled backend
+├── data/                       # SQLite database
+├── Dockerfile                  # Docker configuration
+├── render.yaml                 # Render Blueprint
+├── package.json                # Backend dependencies
+├── tsconfig.json               # TypeScript configuration
+└── README.md                   # This file
 ```
 
 ---
 
-##  Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -471,13 +517,13 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-##  License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-##  Author
+## 👤 Author
 
 **Kunal Shaw**
 
@@ -488,8 +534,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-** Star this repo if you found it helpful!**
+**⭐ Star this repo if you found it helpful!**
 
-Made with  by [Kunal Shaw](https://github.com/KUNALSHAWW)
+Made with ❤️ by [Kunal Shaw](https://github.com/KUNALSHAWW)
 
 </div>

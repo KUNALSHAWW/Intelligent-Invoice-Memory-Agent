@@ -9,7 +9,9 @@
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "seed": "tsx src/seed.ts",
-    "demo": "tsx src/demo.ts"
+    "demo": "tsx src/demo.ts",
+    "demo:run": "tsx scripts/demo-runner.ts",
+    "demo:prod": "tsx scripts/demo-runner.ts --url https://your-backend.onrender.com"
   },
   "keywords": [
     "invoice",

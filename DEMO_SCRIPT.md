@@ -1,6 +1,23 @@
 # 🎬 Video Demo Script - Intelligent Invoice Memory Agent
 
-## 📋 Pre-Recording Checklist
+## � Quick Demo (Automated)
+
+For a quick automated demo in your terminal, run:
+
+```bash
+# Start backend first (in one terminal)
+npm start
+
+# Run demo (in another terminal)
+npm run demo:run
+
+# Or against production backend
+npm run demo:run -- --url https://your-backend.onrender.com
+```
+
+---
+
+## �📋 Pre-Recording Checklist
 
 - [ ] Clear browser cache/history for clean UI
 - [ ] Close unnecessary browser tabs
