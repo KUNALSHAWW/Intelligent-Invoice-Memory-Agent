@@ -1,0 +1,65 @@
+# ==============================================================================
+# RENDER BLUEPRINT - Intelligent Invoice Memory Agent
+# ==============================================================================
+# This file defines the infrastructure for deploying to Render.
+# 
+# IMPORTANT: To enable persistent storage on Render:
+# 1. Go to your Web Service dashboard on Render
+# 2. Click "Disks" in the left sidebar
+# 3. Click "Add Disk"
+# 4. Set Name: "invoice-memory-data"
+# 5. Set Mount Path: "/data"
+# 6. Set Size: 1 GB (or as needed)
+# 7. Click "Save"
+#
+# The DB_PATH environment variable is set to /data/memory.db
+# which will persist across deployments once the disk is mounted.
+# ==============================================================================
+
+services:
+  - type: web
+    name: invoice-memory-agent
+    runtime: docker
+    # Or use Node runtime directly:
+    # runtime: node
+    # buildCommand: npm install && npm run build
+    # startCommand: npm start
+    
+    # Environment variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /data/memory.db
+    
+    # Health check path
+    healthCheckPath: /health
+    
+    # Persistent disk for SQLite database
+    # NOTE: This requires manual setup in Render dashboard
+    # See instructions above or in README.md
+    disk:
+      name: invoice-memory-data
+      mountPath: /data
+      sizeGB: 1
+
+# ==============================================================================
+# ALTERNATIVE: Manual Setup Without render.yaml
+# ==============================================================================
+# If you prefer manual setup:
+#
+# 1. Create a new Web Service on Render
+# 2. Connect your GitHub/GitLab repository
+# 3. Select "Docker" as the Environment
+# 4. Render will auto-detect the Dockerfile
+# 5. Add Environment Variables:
+#    - NODE_ENV = production
+#    - DB_PATH = /data/memory.db
+# 6. After deployment, add a Persistent Disk:
+#    - Name: invoice-memory-data
+#    - Mount Path: /data
+#    - Size: 1 GB
+# 7. Redeploy the service
+#
+# The SQLite database will now persist across deployments!
+# ==============================================================================
