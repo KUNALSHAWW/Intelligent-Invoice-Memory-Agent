@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   MONOCHROME LUXURY - Global Styles
+   ============================================================================ */
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --zinc-900: #18181b;
+  --zinc-800: #27272a;
+  --zinc-700: #3f3f46;
+  --zinc-600: #52525b;
+  --zinc-500: #71717a;
+  --zinc-400: #a1a1aa;
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Glass morphism cards */
+.glass-card {
+  background: rgba(24, 24, 27, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card-dark {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Subtle glow effect */
+.glow-white {
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+}
+
+.glow-white-strong {
+  box-shadow: 0 0 100px rgba(255, 255, 255, 0.1);
+}
+
+/* Typography */
+.text-gradient {
+  background: linear-gradient(to right, #ffffff, #a1a1aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #18181b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* Selection */
+::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Code blocks */
+.code-block {
+  font-family: "JetBrains Mono", "Geist Mono", monospace;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 1.5rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+/* Scanline effect */
+.scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    top: -2px;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+/* Button styles */
+.btn-primary {
+  background: #ffffff;
+  color: #000000;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Input styles */
+.input-dark {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: #ffffff;
+  font-family: "JetBrains Mono", monospace;
+  transition: all 0.2s ease;
+}
+
+.input-dark:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.input-dark::placeholder {
+  color: #71717a;
+}
+
+/* Status indicators */
+.status-online {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.status-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Grid pattern background */
+.grid-pattern {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+body {
+  background: #000000;
+  color: #ffffff;
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+}
