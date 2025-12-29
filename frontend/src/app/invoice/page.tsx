@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback } from "react";
 import { AgentState, AgentThinking, type AgentPhase } from "@/components/AgentState";
 import { Button, CodeBlock, Input, Textarea, Divider } from "@/components/ui";
-import { SafeText } from "@/components/InvoiceField";
+import { InvoiceField, SafeText } from "@/components/InvoiceField";
+import { CorrectionCard } from "@/components/InvoiceCard";
 import {
   processInvoice,
   learnFromCorrections,
@@ -14,7 +15,7 @@ import {
 } from "@/lib/api";
 
 // ============================================================================
-// INVOICE PROCESSOR PAGE - The "Live" View
+// INVOICE PROCESSOR PAGE - Defensive Rendering
 // ============================================================================
 
 export default function InvoiceProcessorPage() {
@@ -80,7 +81,7 @@ export default function InvoiceProcessorPage() {
         memoriesFound:
           processingResult.auditTrail.find((a) => a.action === "RECALL")?.details
             ?.rulesFound as number | undefined,
-        correctionsApplied: processingResult.proposedCorrections.length,
+        correctionsApplied: processingResult.proposedCorrections?.length ?? 0,
         confidenceScore: processingResult.confidenceScore,
         requiresHumanReview: processingResult.requiresHumanReview,
       });
@@ -90,7 +91,7 @@ export default function InvoiceProcessorPage() {
       );
 
       // Pre-fill edited fields if human review needed
-      if (processingResult.requiresHumanReview) {
+      if (processingResult.requiresHumanReview && processingResult.proposedCorrections) {
         const fields: Record<string, string> = {};
         processingResult.proposedCorrections.forEach((c) => {
           fields[c.field] = String(c.proposedValue ?? "");
@@ -183,7 +184,7 @@ export default function InvoiceProcessorPage() {
               size="sm"
               onClick={() => loadDemoInvoice(i)}
             >
-              <SafeText value={inv.vendor} fallback="Unknown Vendor" />
+              <SafeText value={inv.vendor} fallback="Unknown" />
             </Button>
           ))}
         </div>
@@ -268,25 +269,18 @@ export default function InvoiceProcessorPage() {
                     PROCESSING RESULT
                   </h3>
 
-                  {/* Confidence Score */}
+                  {/* Confidence Score - DEFENSIVE */}
                   <div className="mb-6">
                     <div className="flex justify-between text-sm font-mono mb-2">
                       <span className="text-zinc-500">Confidence Score</span>
-                      <span
-                        className={
-                          (result.confidenceScore ?? 0) >= 0.8
-                            ? "text-white"
-                            : "text-zinc-400"
+                      <SafeText
+                        value={result.confidenceScore !== null && result.confidenceScore !== undefined 
+                          ? `${(result.confidenceScore * 100).toFixed(1)}%` 
+                          : null
                         }
-                      >
-                        <SafeText 
-                          value={result.confidenceScore != null 
-                            ? `${(result.confidenceScore * 100).toFixed(1)}%` 
-                            : null
-                          } 
-                          fallback="N/A" 
-                        />
-                      </span>
+                        fallback="N/A"
+                        className={(result.confidenceScore ?? 0) >= 0.8 ? "text-zinc-100" : "text-zinc-400"}
+                      />
                     </div>
                     <div className="h-2 bg-zinc-900 rounded-full overflow-hidden">
                       <motion.div
@@ -298,7 +292,7 @@ export default function InvoiceProcessorPage() {
                     </div>
                   </div>
 
-                  {/* Proposed Corrections */}
+                  {/* Proposed Corrections - DEFENSIVE */}
                   {result.proposedCorrections && result.proposedCorrections.length > 0 && (
                     <div className="mb-6">
                       <h4 className="text-xs font-mono text-zinc-600 mb-3">
@@ -306,48 +300,13 @@ export default function InvoiceProcessorPage() {
                       </h4>
                       <div className="space-y-2">
                         {result.proposedCorrections.map((correction, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-white/5"
-                          >
-                            <div>
-                              <p className="text-sm font-mono text-white">
-                                <SafeText value={correction.field} fallback="Unknown Field" />
-                              </p>
-                              <p className="text-xs font-mono text-zinc-600">
-                                <SafeText value={correction.source} fallback="Unknown Source" />
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-sm font-mono text-zinc-300">
-                                <SafeText 
-                                  value={correction.proposedValue != null 
-                                    ? String(correction.proposedValue) 
-                                    : null
-                                  } 
-                                  fallback="N/A" 
-                                />
-                              </p>
-                              <p className="text-xs font-mono text-zinc-600">
-                                <SafeText 
-                                  value={correction.confidence != null 
-                                    ? `${(correction.confidence * 100).toFixed(0)}% confidence` 
-                                    : null
-                                  } 
-                                  fallback="N/A" 
-                                />
-                              </p>
-                            </div>
-                          </motion.div>
+                          <CorrectionCard key={i} correction={correction} index={i} />
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {/* Review Reasons */}
+                  {/* Review Reasons - DEFENSIVE */}
                   {result.reviewReasons && result.reviewReasons.length > 0 && (
                     <div className="mb-6">
                       <h4 className="text-xs font-mono text-zinc-600 mb-3">
@@ -427,7 +386,7 @@ export default function InvoiceProcessorPage() {
           </motion.div>
         </div>
 
-        {/* Audit Trail */}
+        {/* Audit Trail - DEFENSIVE */}
         {result && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -440,7 +399,7 @@ export default function InvoiceProcessorPage() {
               <CodeBlock
                 title="audit.log"
                 language="json"
-                code={JSON.stringify(result.auditTrail ?? [], null, 2)}
+                code={result.auditTrail ? JSON.stringify(result.auditTrail, null, 2) : "[]"}
                 maxHeight="200px"
               />
             </div>
