@@ -1,9 +1,10 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MetricCard, StatusBadge, Button, Divider, CodeBlock } from "@/components/ui";
+import { SafeText } from "@/components/InvoiceField";
 import { checkHealth, getStats, getRules, type HealthResponse, type StatsResponse, type VendorRule } from "@/lib/api";
 
 // ============================================================================
@@ -50,7 +51,7 @@ export default function DashboardPage() {
       <section className="relative overflow-hidden">
         {/* Background grid */}
         <div className="absolute inset-0 grid-pattern opacity-50" />
-        
+
         {/* Gradient orb */}
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
@@ -74,11 +75,11 @@ export default function DashboardPage() {
             <div className="flex items-center justify-center gap-3 mb-6">
               <StatusBadge status={isOnline ? "online" : "offline"} />
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl font-mono font-bold tracking-tight mb-4">
               <span className="text-gradient">SYSTEM STATUS</span>
             </h1>
-            
+
             <motion.p
               className="text-2xl md:text-3xl font-mono"
               animate={{ opacity: isOnline ? 1 : 0.5 }}
@@ -92,7 +93,7 @@ export default function DashboardPage() {
 
             {error && (
               <p className="mt-4 text-sm font-mono text-zinc-500">
-                {error}
+                <SafeText value={error} fallback="" />
               </p>
             )}
           </motion.div>
@@ -121,17 +122,17 @@ export default function DashboardPage() {
       {/* Metrics Section */}
       <section className="max-w-7xl mx-auto px-6 py-12">
         <Divider label="SYSTEM METRICS" />
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <MetricCard
             label="MEMORIES STORED"
-            value={isLoading ? "..." : stats?.rules ?? 0}
+            value={isLoading ? "..." : (stats?.rules ?? 0)}
             subtitle="Vendor-specific rules"
             icon={<MemoryIcon />}
           />
           <MetricCard
             label="PATTERNS LEARNED"
-            value={isLoading ? "..." : stats?.patterns ?? 0}
+            value={isLoading ? "..." : (stats?.patterns ?? 0)}
             subtitle="Cross-vendor patterns"
             icon={<PatternIcon />}
           />
@@ -147,7 +148,7 @@ export default function DashboardPage() {
       {/* Recent Rules Section */}
       <section className="max-w-7xl mx-auto px-6 py-12">
         <Divider label="LEARNED RULES" />
-        
+
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Rules List */}
           <motion.div
@@ -159,7 +160,7 @@ export default function DashboardPage() {
             <h3 className="text-xs font-mono text-zinc-500 tracking-widest mb-4">
               VENDOR RULES
             </h3>
-            
+
             {isLoading ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
@@ -178,18 +179,26 @@ export default function DashboardPage() {
                   >
                     <div>
                       <p className="text-sm font-mono text-white">
-                        {rule.sourceRawField}  {rule.targetField}
+                        <SafeText value={rule.sourceRawField} fallback="N/A" />
+                        {"  "}
+                        <SafeText value={rule.targetField} fallback="N/A" />
                       </p>
                       <p className="text-xs font-mono text-zinc-600">
-                        {rule.vendorName}
+                        <SafeText value={rule.vendorName} fallback="Unknown Vendor" />
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-mono text-zinc-400">
-                        {(rule.confidence * 100).toFixed(0)}%
+                        <SafeText 
+                          value={rule.confidence != null 
+                            ? `${(rule.confidence * 100).toFixed(0)}%` 
+                            : null
+                          } 
+                          fallback="N/A" 
+                        />
                       </p>
                       <p className="text-xs font-mono text-zinc-600">
-                        {rule.usageCount} uses
+                        <SafeText value={rule.usageCount != null ? `${rule.usageCount} uses` : null} fallback="0 uses" />
                       </p>
                     </div>
                   </motion.div>
